@@ -1,0 +1,23 @@
+<view class="quick-checkin">
+  <view class="quick-grid">
+    <button class="quick-btn" bindtap="onQuick" data-ml="100" style="background: {{buttonGradient}};">
+      <view class="qb-main">+100ml</view>
+      <text class="qb-sub">小口喝</text>
+    </button>
+    <button class="quick-btn" bindtap="onQuick" data-ml="200" style="background: {{buttonGradient}};">
+      <view class="qb-main">+200ml</view>
+      <text class="qb-sub">正常杯</text>
+    </button>
+    <button class="quick-btn" bindtap="onQuick" data-ml="300" style="background: {{buttonGradient}};">
+      <view class="qb-main">+300ml</view>
+      <text class="qb-sub">大口灌</text>
+    </button>
+    <button class="quick-btn outline" bindtap="onCustom" style="border-color: {{outlineBorder}}; background: {{outlineBg}}; color: {{outlineText}};">
+      <view class="qb-main">自定义</view>
+      <text class="qb-sub">任意输入</text>
+    </button>
+  </view>
+  <view class="hint" wx:if="{{tipText}}">
+    <text class="hint-text">{{tipText}}</text>
+  </view>
+</view>

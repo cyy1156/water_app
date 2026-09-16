@@ -1,0 +1,135 @@
+<!-- pages/profile/profile.wxml 我的 + 商城（大升级） -->
+<view class="page">
+  <!-- 顶部角色信息卡 -->
+  <view class="hero">
+    <image wx:if="{{coverImage}}" class="hero-bg" src="{{coverImage}}" mode="aspectFill"></image>
+    <view class="hero-mask"></view>
+
+    <view class="hero-card">
+      <view class="hero-left">
+        <!-- 头像固定为首页模型图像，不再授权/上传 -->
+        <image wx:if="{{profileAvatarUrl}}" class="avatar" src="{{profileAvatarUrl}}" mode="aspectFit"></image>
+        <view wx:else class="avatar placeholder" style="background: {{theme.avatarPlaceholderBg}};"></view>
+      </view>
+
+      <view class="hero-right">
+        <view class="row1">
+          <text class="name" bindtap="onTapEditNickname">{{displayName}}</text>
+          <view class="pill" style="background: {{theme.pillBg}}; border-color: {{theme.pillBorder}};">
+            <text class="pill-text" style="color: {{theme.pillText}};">Lv.{{level}}</text>
+          </view>
+        </view>
+        <view class="row2">
+          <view class="coin">
+            <text class="coin-icon">🪙</text>
+            <text class="coin-value">{{coin}}</text>
+          </view>
+          <text class="stage">{{stage}}</text>
+        </view>
+
+        <view class="exp">
+          <exp-bar current="{{exp}}" max="{{nextLevelExp}}" fillStyle="{{theme.expGradient}}" />
+          <text class="exp-text">{{exp}} / {{nextLevelExp}} EXP</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- M5：每日目标设置 -->
+  <view class="section">
+    <text class="section-title">每日目标</text>
+    <view class="setting-row" bindtap="showTargetSetting">
+      <text class="setting-label">目标水量</text>
+      <text class="setting-value" style="color: {{theme.textPrimary}};">{{targetWater}} ml</text>
+      <text class="setting-arrow">›</text>
+    </view>
+  </view>
+
+  <!-- M4：粥粥提醒 -->
+  <view class="section">
+    <text class="section-title">粥粥提醒</text>
+    <view class="reminder-row">
+      <text class="reminder-label">开启粥粥提醒</text>
+      <switch 
+        class="reminder-switch" 
+        checked="{{reminderEnabled}}" 
+        bindchange="onReminderChange"
+        color="{{theme.primary}}"
+      />
+    </view>
+    <!-- 单独的订阅授权按钮：用于触发 wx.requestSubscribeMessage -->
+    <button wx:if="{{reminderEnabled}}" class="reminder-btn" bindtap="onSubscribeTap" style="margin-top: 12rpx; color: {{theme.btnText}}; background: {{theme.btnBg}}; border-color: {{theme.btnBorder}};">
+      订阅微信提醒消息
+    </button>
+    <view class="reminder-interval-row" wx:if="{{reminderEnabled}}">
+      <text class="reminder-label">提醒间隔</text>
+      <picker mode="selector" range="{{reminderIntervalOptions}}" range-key="label" value="{{reminderIntervalIndex}}" bindchange="onReminderIntervalChange">
+        <view class="picker-value" style="color: {{theme.textPrimary}};">{{reminderIntervalOptions[reminderIntervalIndex].label}}</view>
+      </picker>
+    </view>
+    <text class="reminder-hint" wx:if="{{reminderEnabled}}">粥粥会在合适的时候提醒你喝水哦～</text>
+    <view class="reminder-preview" wx:if="{{reminderEnabled && reminderPreview}}">
+      <text class="reminder-preview-label">当前预览：</text>
+      <text class="reminder-preview-text">{{reminderPreview.previewText}}</text>
+      <text class="reminder-preview-reason {{reminderPreview.wouldSend ? 'would-send' : 'would-not'}}">{{reminderPreview.reason}}</text>
+    </view>
+    <button wx:if="{{reminderEnabled}}" class="reminder-btn" bindtap="requestRemindNow" style="color: {{theme.btnText}}; background: {{theme.btnBg}}; border-color: {{theme.btnBorder}};">立即请求提醒</button>
+  </view>
+
+  <!-- M5：喝水日历入口 -->
+  <view class="section">
+    <view class="section-head">
+      <text class="section-title">喝水日历</text>
+      <navigator url="/packageOther/calendar/calendar" class="section-link" style="color: {{theme.textLink}};">查看统计 ›</navigator>
+    </view>
+  </view>
+
+  <!-- 功能模块 -->
+  <view class="section">
+    <text class="section-title">功能</text>
+    <view class="grid">
+      <view class="grid-item" bindtap="tapFeature" data-key="role">
+        <text class="gi-icon">🧸</text>
+        <text class="gi-text">我的角色</text>
+      </view>
+      <view class="grid-item" bindtap="tapFeature" data-key="roleStore">
+        <text class="gi-icon">🛍️</text>
+        <text class="gi-text">角色商城</text>
+      </view>
+      <view class="grid-item" bindtap="tapFeature" data-key="growth">
+        <text class="gi-icon">📒</text>
+        <text class="gi-text">成长记录</text>
+      </view>
+      <view class="grid-item" bindtap="tapFeature" data-key="achv">
+        <text class="gi-icon">🏅</text>
+        <text class="gi-text">成就</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 自我奖励商城 -->
+  <view class="section">
+    <view class="section-head">
+      <text class="section-title">自我奖励</text>
+      <text class="section-sub">金币兑换自我奖励，达成目标就奖励自己～</text>
+    </view>
+
+    <view class="goods-list">
+      <goods-card
+        wx:for="{{goodsList}}"
+        wx:key="id"
+        goods="{{item}}"
+        coinEnough="{{item.priceCoin <= coin}}"
+        buying="{{buying && buyingGoodsId === item.id}}"
+        buyBtnBg="{{theme.buyBtnBg}}"
+        placeholderBg="{{theme.goodsPlaceholderBg}}"
+        bind:buy="onGoodsBuy"
+      />
+
+      <view class="empty" wx:if="{{goodsList.length === 0}}">
+        <text class="empty-text">自我奖励商品还在上架中～</text>
+      </view>
+    </view>
+  </view>
+</view>
+

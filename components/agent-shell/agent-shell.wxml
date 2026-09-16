@@ -1,0 +1,13 @@
+<!-- components/agent-shell/agent-shell.wxml 粥粥智能体壳（Q版：头大身体小 + 对话气泡） -->
+<view class="agent-shell" bindtap="onTap">
+  <!-- 智能体图片：使用 URL（app.globalData.agentImageUrl），不打包大图 -->
+  <image wx:if="{{agentImageUrl}}" class="agent-img" src="{{agentImageUrl}}" mode="aspectFit" />
+
+  <!-- 对话气泡 -->
+  <view class="bubble">
+    <text class="bubble-prefix">粥粥说：</text>
+    <text class="bubble-text">{{displayText}}</text>
+  </view>
+</view>
+
+

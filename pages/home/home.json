@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "粥粥成长",
+  "usingComponents": {
+    "agent-3d": "/components/agent-3d/agent-3d",
+    "agent-shell": "/components/agent-shell/agent-shell",
+    "progress-ring": "/components/progress-ring/progress-ring",
+    "quick-checkin": "/components/quick-checkin/quick-checkin",
+    "exp-bar": "/components/exp-bar/exp-bar"
+  }
+}

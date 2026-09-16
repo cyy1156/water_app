@@ -1,0 +1,103 @@
+# 云托管环境配置（微信云托管 / Tencent CloudBase）
+# 使用方式：在云托管控制台设置 active profiles = cloud，并配置下方环境变量
+
+spring:
+  # 应用名（保持与本地一致，方便日志识别）
+  application:
+    name: water-app
+
+  # 数据源：通过环境变量注入（在云托管控制台配置）
+  #   MYSQL_ADDRESS=<your-mysql-host>:3306
+  #   MYSQL_USERNAME=<your-username>
+  #   MYSQL_PASSWORD=<your-password>
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${MYSQL_ADDRESS}/water_app?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PASSWORD}
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+
+  # 云端暂无 Redis：禁用 Redis 自动配置，避免连接 localhost:6379 报错
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
+      - org.springframework.boot.autoconfigure.data.redis.RedisReactiveAutoConfiguration
+      - org.springframework.boot.autoconfigure.data.redis.RedisRepositoriesAutoConfiguration
+
+  # Redis（如后续云端接入 Redis，可取消上面的 exclude，并配置下面这段）
+  # redis:
+  #   host: ${REDIS_HOST}
+  #   port: ${REDIS_PORT:6379}
+  #   password: ${REDIS_PASSWORD:}
+  #   database: 0
+  #   timeout: 5000
+
+# MyBatis Plus配置（与本地一致）
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.waterapp.entity
+  configuration:
+    map-underscore-to-camel-case: true
+  global-config:
+    db-config:
+      id-type: auto
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+# JWT配置（保持与本地一致，便于前后端共用 token）
+# ⚠️ 云托管控制台需配置环境变量 JWT_SECRET
+jwt:
+  secret: ${JWT_SECRET}
+  expiration: 604800000   # 7天，单位：毫秒
+
+# 微信小程序配置（提醒、openid 等云环境同样需要）
+# ⚠️ AppSecret 必须通过环境变量 WECHAT_SECRET 注入
+wechat:
+  appid: ${WECHAT_APPID}
+  secret: ${WECHAT_SECRET}
+  subscribe:
+    template-id:
+      # 与本地 application.yml 保持一致，这样云端定时任务才能找到模板并真正发送
+      remind: ${WECHAT_TEMPLATE_ID:KVB2gGSf6RhMW3xzaFAHDFkPReUEaF0eqYAxMlybve4}
+
+# 云环境：上传目录使用相对路径（容器内可写目录）
+app:
+  redis:
+    enabled: false
+  auth:
+    # 云端必须关闭调试兜底：否则所有请求都会当成 userId=1，导致头像/昵称/订阅全部错乱
+    dev-bypass: false
+  chat:
+    upload-dir: uploads/chat
+    # 云上无 Ollama，使用 mock 避免连接失败
+    ai-type: mock
+  goods:
+    upload-dir: uploads/goods
+  avatar:
+    upload-dir: uploads/avatar
+
+# 大升级：成长系统（与本地保持一致）
+growth:
+  exp-per-100ml: 10
+  coin-per-100ml: 5
+  target-bonus-exp: 100
+  target-bonus-coin: 50
+  next-level-exp: 1000
+  level-exp-table: [1000, 1500, 2000, 2500, 3000, 3500, 4000, 5000]
+
+# M4：提醒定时任务配置（关键：云环境也要有 cron 配置，定时任务才会按间隔扫描并发送）
+reminder:
+  cron: '0 0/10 * * * ?'
+  scan-interval-min: 10
+
+# 云环境日志级别（生产建议 info）
+logging:
+  level:
+    com.waterapp: info
+    org.springframework.web: info

@@ -1,0 +1,117 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+spring:
+  application:
+    name: water-app
+
+  # 数据源配置
+  # ⚠️ 数据库地址 / 账号 / 密码一律通过环境变量注入，请勿把真实凭据提交到仓库
+  #    环境变量：MYSQL_ADDRESS / MYSQL_USERNAME / MYSQL_PASSWORD
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${MYSQL_ADDRESS:localhost:3306}/water_app?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: ${MYSQL_USERNAME:root}
+    password: ${MYSQL_PASSWORD}
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+
+  # Redis配置
+  redis:
+    host: ${REDIS_HOST:localhost}
+    port: ${REDIS_PORT:6379}
+    password: ${REDIS_PASSWORD:}
+    database: 0
+    timeout: 3000
+    lettuce:
+      pool:
+        max-active: 10
+        max-idle: 5
+        min-idle: 2
+        max-wait: 1000
+
+# MyBatis Plus配置
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.waterapp.entity
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      id-type: auto
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+# JWT配置
+# ⚠️ secret 必须通过环境变量 JWT_SECRET 注入（默认值仅供本地跑通，切勿用于生产）
+jwt:
+  secret: ${JWT_SECRET:local-dev-only-change-me}
+  expiration: 604800000   # 7天，单位：毫秒
+
+# 微信小程序配置
+# ⚠️ AppID 属公开信息；AppSecret 必须通过环境变量 WECHAT_SECRET 注入
+wechat:
+  appid: ${WECHAT_APPID:wxad5480ff983499bd}
+  secret: ${WECHAT_SECRET}
+  # M4：订阅消息模板 ID（需在微信公众平台创建「喝水提醒」模板后填写）
+  subscribe:
+    template-id:
+      remind: ${WECHAT_TEMPLATE_ID:KVB2gGSf6RhMW3xzaFAHDFkPReUEaF0eqYAxMlybve4}
+
+# 大升级：成长系统（可按运营调整）
+growth:
+  exp-per-100ml: 10
+  coin-per-100ml: 5
+  target-bonus-exp: 100
+  target-bonus-coin: 50
+  # 单级阈值（当未配置 level-exp-table 时使用）
+  next-level-exp: 1000
+  # 多级经验阈值（可选）：下标 0 表示 Lv1->2 所需经验，下标 1 表示 Lv2->3，以此类推；未配置则用 next-level-exp
+  level-exp-table: [1000, 1500, 2000, 2500, 3000, 3500, 4000, 5000]
+
+# M4：提醒定时任务配置
+reminder:
+  # Cron表达式：0 0/10 * * * ? 表示每10分钟执行一次
+  # 测试时可改为：0 0/1 * * * ? （每分钟）或 0 0/5 * * * ? （每5分钟）
+  cron: '0 0/10 * * * ?'
+  # 扫描间隔（分钟），用于日志说明（实际执行频率由cron控制）
+  scan-interval-min: 10
+
+# 日志配置
+logging:
+  level:
+    com.waterapp: debug
+    org.springframework.web: info
+  pattern:
+    console: '%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{50} - %msg%n'
+
+# 应用自定义配置
+app:
+  auth:
+    # 本地开发可开启：无 token 时使用测试用户 userId=1，方便调试；生产环境务必置为 false
+    dev-bypass: true
+  chat:
+    # 聊天图片上传目录（使用相对路径，避免因启动目录不同导致图片 404）
+    upload-dir: ./uploads/chat
+    # 对话历史最大返回条数
+    max-history: 50
+    # AI服务类型：mock（本地模拟）、ollama（Ollama本地部署）
+    ai-type: ollama
+    # Ollama 配置（本地部署地址可用环境变量 OLLAMA_BASE_URL 覆盖）
+    ollama:
+      base-url: ${OLLAMA_BASE_URL:http://localhost:11434}
+      model: qwen2.5:1.5b
+      timeout: 30000
+  goods:
+    # 商品图片上传目录
+    upload-dir: ./uploads/goods
+  avatar:
+    upload-dir: ./uploads/avatar

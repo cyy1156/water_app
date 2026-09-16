@@ -1,0 +1,36 @@
+<view class="container">
+  <view class="summary-card">
+    <view class="summary-row">
+      <text class="summary-label">当前总积分</text>
+      <text class="summary-value">{{statistics.totalPoints}}</text>
+    </view>
+    <view class="summary-row">
+      <view class="summary-col">
+        <text class="summary-sub-label">累计获得</text>
+        <text class="summary-sub-value positive">+{{statistics.totalEarned}}</text>
+      </view>
+      <view class="summary-col">
+        <text class="summary-sub-label">累计消耗</text>
+        <text class="summary-sub-value negative">{{statistics.totalSpent}}</text>
+      </view>
+    </view>
+  </view>
+  <view class="list-title">积分明细</view>
+  <block wx:if="{{list.length > 0}}">
+    <scroll-view scroll-y="true" class="list-scroll">
+      <block wx:for="{{list}}" wx:key="id">
+        <view class="item">
+          <view class="item-main">
+            <text class="item-desc">{{item.description || '积分变动'}}</text>
+            <text class="item-time">{{item.createTime}}</text>
+          </view>
+          <view class="item-points" wx:if="{{item.points >= 0}}">+{{item.points}}</view>
+          <view class="item-points minus" wx:else>{{item.points}}</view>
+        </view>
+      </block>
+    </scroll-view>
+  </block>
+  <block wx:else>
+    <view class="empty"><text>暂时还没有积分记录~</text></view>
+  </block>
+</view>

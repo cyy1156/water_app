@@ -1,0 +1,3 @@
+<view class="exp-bar">
+  <view class="exp-fill" style="width: {{percent}}%; background: {{fillStyle}};"></view>
+</view>

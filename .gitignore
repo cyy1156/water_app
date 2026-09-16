@@ -1,0 +1,111 @@
+# ===================== 核心：忽略大文件/二进制文件（100MB+重点） =====================
+# 通用大文件类型（常见的易超100MB的文件）
+*.zip
+*.rar
+*.7z
+*.tar.gz
+*.iso
+*.img
+*.bin
+*.dat
+*.db
+*.vc.db        # VS超大缓存文件（你的场景重点）
+*.ipch         # VS预编译头文件（你的场景重点）
+*.log          # 超大日志文件
+*.csv          # 大数据集文件
+*.h5
+*.pth
+*.model        # AI模型文件
+*.ckpt
+*.mp4
+*.avi
+*.mov          # 视频文件
+*.wav
+*.flac         # 音频文件
+*.psd
+*.ai           # 设计文件
+
+# ===================== 开发工具/编译产物（必忽略，避免冗余） =====================
+# Visual Studio（你的项目重点）
+.vs/
+Debug/
+Release/
+x64/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.vcxproj.user
+*.sdf
+*.opensdf
+*.VC.db
+*.VC.VC.opendb
+
+# IDE通用
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store     # Mac系统文件
+Thumbs.db     # Windows系统文件
+
+# 编译产物通用
+*.o
+*.obj
+*.dll
+*.so
+*.dylib
+*.lib
+*.a
+*.exe
+*.out
+*.pdb
+*.ilk
+*.exp
+
+# ===================== 语言/框架专属（按需启用，删除注释即可） =====================
+# Python
+# __pycache__/
+# *.py[cod]
+# *.pyd
+# *.whl
+# venv/
+# env/
+# .env
+
+# Java
+*.class
+*.jar
+*.war
+target/
+.mvn/
+
+# Node.js
+node_modules/
+npm-debug.log
+yarn.lock
+package-lock.json
+
+# Secrets / local env (keep examples only)
+.env
+.env.*
+!.env.example
+
+# WeChat DevTools / local
+project.private.config.json
+miniprogram_npm/
+
+# ===================== 敏感配置（务必不要提交真实凭据） =====================
+# 数据库密码 / 小程序 AppSecret / JWT 密钥请放在环境变量，或写在下面这些本地覆写文件里
+application-local.yml
+application-local.yaml
+application-local.properties
+application-secret.yml
+application-secret.yaml
+*-local.yml
+*-secret.yml
+
+# ===================== 运行时产物 =====================
+backend/uploads/
+backend/logs/
+logs/

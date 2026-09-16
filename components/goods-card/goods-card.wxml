@@ -1,0 +1,21 @@
+<view class="goods-card" wx:if="{{goods}}">
+  <image wx:if="{{goods.imageUrl}}" class="goods-img" src="{{goods.imageUrl}}" mode="aspectFill"></image>
+  <view wx:else class="goods-img placeholder" style="background: {{placeholderBg}};"></view>
+  <view class="goods-body">
+    <text class="goods-name">{{goods.name}}</text>
+    <text class="goods-desc">{{goods.description || '可可爱爱的小物件'}}</text>
+    <view class="goods-bottom">
+      <view class="price">
+        <text class="coin-icon">🪙</text>
+        <text class="price-num">{{goods.priceCoin}}</text>
+      </view>
+      <button
+        class="buy-btn {{!coinEnough ? 'disabled' : ''}}"
+        disabled="{{!coinEnough || buying}}"
+        loading="{{buying}}"
+        bindtap="onBuy"
+        style="background: {{coinEnough ? buyBtnBg : ''}};"
+      >{{!coinEnough ? '金币不足' : '购买'}}</button>
+    </view>
+  </view>
+</view>

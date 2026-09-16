@@ -1,0 +1,20 @@
+.container { display: flex; flex-direction: column; height: 100%; padding: 24rpx 24rpx 48rpx; background: #f7f8fa; box-sizing: border-box; }
+.summary-card { background: #fff; border-radius: 24rpx; padding: 24rpx 28rpx; box-shadow: 0 8rpx 24rpx rgba(0,0,0,0.04); margin-bottom: 24rpx; }
+.summary-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12rpx; }
+.summary-row:last-child { margin-bottom: 0; }
+.summary-label { font-size: 28rpx; color: #666; }
+.summary-value { font-size: 40rpx; font-weight: 600; color: #4b7fff; }
+.summary-col { display: flex; flex-direction: column; }
+.summary-sub-label { font-size: 24rpx; color: #999; }
+.summary-sub-value { margin-top: 4rpx; font-size: 28rpx; font-weight: 500; }
+.summary-sub-value.positive { color: #25b864; }
+.summary-sub-value.negative { color: #ff6b6b; }
+.list-title { font-size: 28rpx; color: #333; margin: 12rpx 0; }
+.list-scroll { flex: 1; }
+.item { display: flex; justify-content: space-between; align-items: center; padding: 20rpx 24rpx; margin-bottom: 16rpx; background: #fff; border-radius: 20rpx; }
+.item-main { display: flex; flex-direction: column; }
+.item-desc { font-size: 28rpx; color: #333; }
+.item-time { margin-top: 6rpx; font-size: 22rpx; color: #999; }
+.item-points { font-size: 32rpx; font-weight: 600; color: #25b864; }
+.item-points.minus { color: #ff6b6b; }
+.empty { flex: 1; display: flex; align-items: center; justify-content: center; color: #999; font-size: 26rpx; }

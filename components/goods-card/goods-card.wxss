@@ -1,0 +1,73 @@
+.goods-card {
+  display: flex;
+  gap: 16rpx;
+  border-radius: 16rpx;
+  background: #fff;
+  padding: 16rpx;
+  box-shadow: 0 10rpx 24rpx rgba(0,0,0,0.08);
+}
+
+.goods-img {
+  width: 140rpx;
+  height: 140rpx;
+  border-radius: 14rpx;
+  background: rgba(0,0,0,0.05);
+}
+
+.goods-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.goods-name {
+  font-size: 28rpx;
+  font-weight: 800;
+  color: #1f2d1f;
+}
+
+.goods-desc {
+  margin-top: 6rpx;
+  font-size: 22rpx;
+  color: rgba(46,59,46,0.62);
+}
+
+.goods-bottom {
+  margin-top: 10rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.price {
+  display: flex;
+  align-items: center;
+}
+
+.coin-icon {
+  margin-right: 4rpx;
+}
+
+.price-num {
+  font-weight: 900;
+  color: #FF9800;
+  font-size: 30rpx;
+}
+
+.buy-btn {
+  padding: 12rpx 24rpx;
+  font-size: 26rpx;
+  border-radius: 12rpx;
+  border: none;
+  color: #fff;
+}
+
+.buy-btn::after {
+  border: none;
+}
+
+.buy-btn.disabled {
+  background: rgba(0,0,0,0.12) !important;
+  color: rgba(0,0,0,0.4);
+}

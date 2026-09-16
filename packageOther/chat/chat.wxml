@@ -1,0 +1,22 @@
+<view class="chat-container">
+  <scroll-view class="chat-messages" scroll-y="true" scroll-into-view="{{lastMsgId}}" scroll-with-animation="true">
+    <view class="message {{item.role}}" wx:for="{{messages}}" wx:key="id" id="msg-{{item.id}}">
+      <view class="message-content">{{item.content}}</view>
+      <image wx:if="{{item.imageUrl}}" src="{{item.imageUrl}}" class="message-image" mode="aspectFit"></image>
+    </view>
+    <view class="empty" wx:if="{{messages.length === 0 && !loading}}">
+      <text class="empty-text">开始和AI聊天吧~</text>
+      <text class="empty-hint">AI可以查看你的打卡记录和积分，提供个性化建议</text>
+    </view>
+    <view class="loading" wx:if="{{loading && messages.length === 0}}">
+      <text class="loading-text">AI正在思考...</text>
+    </view>
+  </scroll-view>
+  <view class="input-bar" wx:if="{{!showInput}}">
+    <button class="input-btn" bindtap="showInputDialog">输入消息</button>
+  </view>
+  <view class="input-bar" wx:if="{{showInput}}">
+    <input class="input-field" placeholder="和我聊聊吧..." value="{{inputText}}" bindinput="onInput" confirm-type="send" bindconfirm="sendMessage" focus="{{showInput}}" bindblur="hideInputDialog" />
+    <button class="send-btn" bindtap="sendMessage">发送</button>
+  </view>
+</view>

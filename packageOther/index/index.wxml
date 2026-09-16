@@ -1,0 +1,22 @@
+<view class="container">
+  <view class="today-card">
+    <text class="title">今日喝水</text>
+    <view class="water-info">
+      <text class="current">{{currentWater}}ml</text>
+      <text class="target">/ {{targetWater}}ml</text>
+    </view>
+    <button class="checkin-btn" bindtap="handleCheckin">打卡喝水</button>
+  </view>
+  <view class="history-section">
+    <text class="section-title">打卡历史</text>
+    <view class="history-list">
+      <view class="history-item" wx:for="{{historyList}}" wx:key="id">
+        <text>{{item.time}}</text>
+        <text>{{item.ml}}ml</text>
+      </view>
+      <view class="empty" wx:if="{{historyList.length === 0}}">
+        <text class="empty-text">暂无打卡记录</text>
+      </view>
+    </view>
+  </view>
+</view>

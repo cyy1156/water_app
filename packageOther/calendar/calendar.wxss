@@ -1,0 +1,18 @@
+.calendar-container { padding: 20rpx; background-color: #f5f5f5; min-height: 100vh; }
+.month-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30rpx; background: white; padding: 30rpx; border-radius: 16rpx; }
+.month-btn { color: white; border-radius: 8rpx; padding: 10rpx 20rpx; font-size: 24rpx; border: none; }
+.month-text { font-size: 32rpx; font-weight: bold; color: #333; }
+.calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10rpx; background: white; padding: 20rpx; border-radius: 16rpx; margin-bottom: 30rpx; }
+.weekday { text-align: center; color: #666; font-weight: bold; padding: 15rpx 0; font-size: 28rpx; }
+.day { text-align: center; padding: 16rpx 8rpx; border-radius: 8rpx; font-size: 26rpx; display: flex; flex-direction: column; align-items: center; gap: 4rpx; }
+.day-num { font-weight: 700; }
+.day-count { font-size: 20rpx; opacity: 0.9; }
+.unchecked { background-color: rgba(0,0,0,0.06); color: #666; }
+.month-summary { padding: 20rpx 24rpx; background: #fff; border-radius: 16rpx; margin-bottom: 20rpx; font-size: 26rpx; color: #666; }
+.day-detail { margin-top: 30rpx; padding: 30rpx; background: white; border-radius: 16rpx; }
+.detail-title { font-size: 32rpx; font-weight: bold; color: #333; display: block; margin-bottom: 20rpx; }
+.detail-list { min-height: 100rpx; }
+.detail-item { padding: 15rpx 0; border-bottom: 1rpx solid #eee; font-size: 28rpx; color: #666; }
+.detail-item:last-child { border-bottom: none; }
+.empty { text-align: center; padding: 40rpx 0; color: #999; }
+.empty-text { font-size: 28rpx; }

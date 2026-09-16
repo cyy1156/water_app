@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "exp-bar": "/components/exp-bar/exp-bar",
+    "goods-card": "/components/goods-card/goods-card"
+  },
+  "navigationBarTitleText": "我的"
+}

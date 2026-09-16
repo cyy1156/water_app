@@ -1,0 +1,3 @@
+<view class="progress-ring" style="width: {{size}}rpx; height: {{size}}rpx;">
+  <view class="ring-progress" style="background: conic-gradient({{ringColor}} {{progressDeg}}deg, {{ringTrack}} 0deg);"></view>
+</view>

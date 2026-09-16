@@ -1,0 +1,49 @@
+<!--packageOther/achievement 成就：两个页面（目标成就 / 兑换记录）-->
+<view class="page">
+  <view class="tabs">
+    <view class="tab {{activeTab === 'system' ? 'active' : ''}}" data-tab="system" bindtap="onSwitchTab" style="{{activeTab === 'system' ? 'background: ' + theme.buttonGradient + '; color: #fff;' : ''}}">目标成就</view>
+    <view class="tab {{activeTab === 'redeem' ? 'active' : ''}}" data-tab="redeem" bindtap="onSwitchTab" style="{{activeTab === 'redeem' ? 'background: ' + theme.buttonGradient + '; color: #fff;' : ''}}">兑换记录</view>
+  </view>
+
+  <view class="panel" wx:if="{{activeTab === 'system'}}">
+    <view class="section">
+      <view class="section-desc">连续打卡喝水达成的成就与徽章</view>
+      <view class="list" wx:if="{{systemAchievements.length > 0}}">
+        <view class="card system" wx:for="{{systemAchievements}}" wx:key="id">
+          <view class="badge">{{item.badgeName || '徽章'}}</view>
+          <view class="info">
+            <text class="label">连续 {{item.streakDays}} 天打卡</text>
+            <text class="coin" wx:if="{{item.coinReward}}">+{{item.coinReward}} 金币</text>
+            <text class="time">{{item.completedAtStr}}</text>
+          </view>
+        </view>
+      </view>
+      <view class="empty-tip" wx:else>坚持打卡喝水，解锁连续 3/5/10 天等成就～</view>
+    </view>
+  </view>
+
+  <view class="panel" wx:if="{{activeTab === 'redeem'}}">
+    <view class="section" wx:if="{{pendingList.length > 0}}">
+      <view class="section-title">待确认完成</view>
+      <view class="section-desc">兑换后点击「完成」才会计入成就</view>
+      <view class="list">
+        <view class="card pending" wx:for="{{pendingList}}" wx:key="recordId">
+          <view class="goods-name">{{item.goodsName || '自我奖励'}}</view>
+          <view class="time">{{item.createTimeStr}}</view>
+          <button class="btn-done" bindtap="onConfirmDone" data-record-id="{{item.recordId}}" style="background: {{theme.buttonGradient}}; color: #fff;">完成</button>
+        </view>
+      </view>
+    </view>
+    <view class="section">
+      <view class="section-title">{{pendingList.length > 0 ? '已完成' : '兑换记录'}}</view>
+      <view class="section-desc">已确认完成的自我奖励</view>
+      <view class="list" wx:if="{{redeemedAchievements.length > 0}}">
+        <view class="card redeemed" wx:for="{{redeemedAchievements}}" wx:key="id">
+          <view class="goods-name">{{item.goodsName || '自我奖励'}}</view>
+          <view class="time">{{item.completedAtStr}}</view>
+        </view>
+      </view>
+      <view class="empty-tip" wx:else>去商城兑换自我奖励，兑换后在此页点击「完成」即会出现在这里～</view>
+    </view>
+  </view>
+</view>

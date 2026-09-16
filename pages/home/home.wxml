@@ -1,0 +1,227 @@
+<!-- pages/home/home.wxml 粥粥成长页 -->
+<view class="page">
+  <!-- 背景封面（模糊） -->
+  <view class="bg">
+    <image wx:if="{{coverImage}}" class="bg-img" src="{{coverImage}}" mode="aspectFill"></image>
+    <view class="bg-mask"></view>
+  </view>
+
+  <view class="content">
+    <!-- 顶部区域 -->
+    <view class="top">
+      <view class="title">
+        <text class="title-text">粥粥今天也在努力长大 🌱</text>
+      </view>
+
+      <view class="top-right">
+        <view class="theme-row">
+          <text class="theme-label">主题颜色</text>
+          <view class="theme-btn" bindtap="chooseTheme">
+            <view class="theme-dot" style="background: {{theme.primary}};"></view>
+          </view>
+        </view>
+        <view class="coin-pill">
+          <text class="coin-icon">🪙</text>
+          <!-- 明确说明这里显示的是当前金币库存 -->
+          <text class="coin-label">金币</text>
+          <text class="coin-value">{{coin}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 等级 -->
+    <view class="level-row">
+      <view class="level-left">
+        <text class="lv">Lv.{{level}}</text>
+        <text class="stage">{{stage}}</text>
+      </view>
+      <view class="level-right">
+        <text class="exp-text">{{exp}} / {{nextLevelExp}} EXP</text>
+      </view>
+    </view>
+    <exp-bar current="{{exp}}" max="{{nextLevelExp}}" fillStyle="{{theme.expGradient}}" />
+
+    <!-- 中心圆环区域 -->
+    <view class="ring-wrap">
+      <view class="ring">
+        <progress-ring progress="{{progress}}" ringColor="{{theme.ringColor}}" ringTrack="{{theme.ringTrack}}" size="560" />
+        <view class="ring-inner">
+          <!-- 3D 智能体：放入 packageModels/glb/agent_default.glb 后显示 -->
+          <block wx:if="{{useAgent3D}}">
+            <view class="agent-3d-wrap">
+              <agent-3d glb-path="{{glbPath}}" />
+            </view>
+            <!-- 说话入口放在模型下方，点击气泡打开聊天 -->
+            <view class="agent-bubble" bindtap="openChat">
+              <text class="bubble-prefix">粥粥说：</text>
+              <text class="bubble-text">{{chatPlaceholder}}</text>
+            </view>
+          </block>
+          <!-- 2D 降级：无 GLB 或关闭 3D 时显示 -->
+          <agent-shell wx:else agentImageUrl="{{agentImageUrl}}" text="{{chatPlaceholder}}" bind:tapAgent="openChat" />
+        </view>
+      </view>
+
+      <!-- 圆环下方信息 -->
+      <view class="stats">
+        <view class="stat-card">
+          <text class="stat-label">今日喝水</text>
+          <view class="stat-value">
+            <text class="stat-strong">{{currentWater}}</text>
+            <text class="stat-unit">ml</text>
+            <text class="stat-muted"> / {{targetWater}}ml</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- M5：喝水品种选择（在打卡按钮上方） -->
+    <view class="water-type-row">
+      <view class="water-type-label">选择品种：</view>
+      <view class="water-type-btns">
+        <view 
+          class="water-type-btn {{selectedWaterType === 'WATER' ? 'active' : ''}}" 
+          bindtap="selectWaterType" 
+          data-type="WATER"
+          style="{{selectedWaterType === 'WATER' ? 'background: ' + theme.waterTypeBtnActiveBg + '; color: ' + theme.waterTypeBtnActiveColor + '; border-color: ' + theme.waterTypeBtnActiveBorder + ';' : ''}}"
+        >💧 白水</view>
+        <view 
+          class="water-type-btn {{selectedWaterType === 'TEA' ? 'active' : ''}}" 
+          bindtap="selectWaterType" 
+          data-type="TEA"
+          style="{{selectedWaterType === 'TEA' ? 'background: ' + theme.waterTypeBtnActiveBg + '; color: ' + theme.waterTypeBtnActiveColor + '; border-color: ' + theme.waterTypeBtnActiveBorder + ';' : ''}}"
+        >🍵 茶</view>
+        <view 
+          class="water-type-btn {{selectedWaterType === 'COFFEE' ? 'active' : ''}}" 
+          bindtap="selectWaterType" 
+          data-type="COFFEE"
+          style="{{selectedWaterType === 'COFFEE' ? 'background: ' + theme.waterTypeBtnActiveBg + '; color: ' + theme.waterTypeBtnActiveColor + '; border-color: ' + theme.waterTypeBtnActiveBorder + ';' : ''}}"
+        >☕ 咖啡</view>
+        <view 
+          class="water-type-btn {{selectedWaterType === 'MILK_TEA' ? 'active' : ''}}" 
+          bindtap="selectWaterType" 
+          data-type="MILK_TEA"
+          style="{{selectedWaterType === 'MILK_TEA' ? 'background: ' + theme.waterTypeBtnActiveBg + '; color: ' + theme.waterTypeBtnActiveColor + '; border-color: ' + theme.waterTypeBtnActiveBorder + ';' : ''}}"
+        >🧋 奶茶</view>
+        <view 
+          class="water-type-btn {{selectedWaterType === 'DRINK' ? 'active' : ''}}" 
+          bindtap="selectWaterType" 
+          data-type="DRINK"
+          style="{{selectedWaterType === 'DRINK' ? 'background: ' + theme.waterTypeBtnActiveBg + '; color: ' + theme.waterTypeBtnActiveColor + '; border-color: ' + theme.waterTypeBtnActiveBorder + ';' : ''}}"
+        >🥤 饮料</view>
+      </view>
+    </view>
+
+    <!-- 快速打卡区域 -->
+    <view class="quick-card">
+      <quick-checkin
+        buttonGradient="{{theme.buttonGradient}}"
+        outlineBorder="{{theme.outlineBorder}}"
+        outlineBg="{{theme.outlineBg}}"
+        outlineText="{{theme.outlineText}}"
+        tipText="{{tipText}}"
+        bind:checkin="onQuickCheckin"
+        bind:custom="customAdd"
+      />
+    </view>
+
+  </view>
+
+  <!-- M5：首次登录弹窗（仅昵称：用户输入或留空则随机分配，头像固定为首页模型图） -->
+  <view class="first-login-mask" wx:if="{{showFirstLoginModal}}" catchtap="onFirstLoginSkip">
+    <view class="first-login-modal" catchtap="onFirstLoginModalTap">
+      <view class="fl-head" catchtap="onFirstLoginModalTap">
+        <text class="fl-title">先取个昵称吧～</text>
+        <text class="fl-desc">可以自己输入，留空将随机分配一个昵称</text>
+      </view>
+      <view class="fl-input-row">
+        <input
+          class="fl-input"
+          placeholder="请输入昵称（可自定义）"
+          value="{{firstLoginNickname}}"
+          bindinput="onFirstLoginNicknameInput"
+          bindfocus="onFirstLoginInputFocus"
+          bindblur="onFirstLoginInputBlur"
+          maxlength="12"
+        />
+      </view>
+      <view class="fl-btns">
+        <button class="fl-btn primary" bindtap="onFirstLoginSubmit">完成</button>
+        <button class="fl-btn" bindtap="onFirstLoginSkip">暂不</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- M5：个性化方案确认 -->
+  <view class="first-login-mask" wx:if="{{showFirstLoginPlan}}" catchtap="onFirstLoginCustom">
+    <view class="first-login-plan-modal" catchtap="">
+      <text class="fl-title">{{firstLoginPlan.welcomeMessage}}</text>
+      <view class="fl-plan">
+        <text>推荐每日目标：{{firstLoginPlan.recommendedTarget}} ml</text>
+        <text>推荐提醒时段：{{firstLoginPlan.recommendedStartTime}}-{{firstLoginPlan.recommendedEndTime}}</text>
+        <text>推荐提醒间隔：{{firstLoginPlan.recommendedInterval}} 分钟</text>
+      </view>
+      <view class="fl-btns">
+        <button class="fl-btn primary" bindtap="onFirstLoginAccept">接受方案</button>
+        <button class="fl-btn" bindtap="onFirstLoginCustom">自定义设置</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 聊天面板（完整聊天体验） -->
+  <view class="chat-panel {{showChatPanel ? 'show' : ''}}" wx:if="{{showChatPanel}}">
+    <view class="chat-panel-header">
+      <text class="chat-title">和粥粥聊天</text>
+      <view class="chat-close" bindtap="closeChatPanel">
+        <text>✕</text>
+      </view>
+    </view>
+
+    <scroll-view 
+      class="chat-messages" 
+      scroll-y="true" 
+      scroll-into-view="{{lastMsgId}}" 
+      scroll-with-animation="true"
+      scroll-top="{{chatScrollTop}}"
+    >
+      <view 
+        class="message {{item.role}}" 
+        wx:for="{{chatMessages}}" 
+        wx:key="id"
+        id="msg-{{item.id}}"
+      >
+        <view class="message-content">{{item.content}}</view>
+        <image wx:if="{{item.imageUrl}}" src="{{item.imageUrl}}" class="message-image" mode="aspectFit"></image>
+      </view>
+      
+      <view class="chat-empty" wx:if="{{chatMessages.length === 0 && !chatLoading}}">
+        <text class="empty-text">开始和粥粥聊天吧~</text>
+        <text class="empty-hint">AI可以查看你的打卡记录和积分，提供个性化建议</text>
+      </view>
+      
+      <view class="chat-loading" wx:if="{{chatLoading && chatMessages.length === 0}}">
+        <text class="loading-text">AI正在思考...</text>
+      </view>
+    </scroll-view>
+
+    <view class="chat-input-bar">
+      <input 
+        class="chat-input-field" 
+        placeholder="和粥粥说句话..." 
+        value="{{chatInput}}" 
+        bindinput="onChatInput" 
+        confirm-type="send"
+        bindconfirm="sendChat"
+        disabled="{{chatSending}}"
+      />
+      <button 
+        class="chat-send-btn" 
+        bindtap="sendChat" 
+        loading="{{chatSending}}" 
+        disabled="{{chatSending || !chatInput.trim()}}"
+      >发送</button>
+    </view>
+  </view>
+</view>
+
+

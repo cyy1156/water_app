@@ -1,0 +1,6 @@
+<view class="chat-card" bindtap="onTap">
+  <view class="bubble">
+    <text class="bubble-prefix">粥粥说：</text>
+    <text class="bubble-text">{{displayText}}</text>
+  </view>
+</view>

@@ -1,0 +1,20 @@
+<!-- components/agent-3d/agent-3d.wxml 圆环内 3D 智能体（xr-frame 场景） -->
+<!-- 注意：xr-asset-load 的 src 不宜动态切换，使用固定路径确保能加载 -->
+<xr-scene id="agent-scene" antialias="true">
+  <xr-assets>
+    <xr-asset-load type="gltf" asset-id="agentGlb" src="/models/agent_default.glb" options="ignoreError: -1" />
+  </xr-assets>
+
+  <!-- 相机与光照：clear-color 与圆环一致 -->
+  <xr-node>
+    <xr-camera id="camera" position="0 1.2 2.5" target="0 0.6 0" clear-color="0.96 0.97 0.96 1" />
+    <xr-light type="ambient" color="1 1 1" intensity="0.9" />
+    <xr-light type="directional" rotation="30 30 0" color="1 1 1" intensity="0.8" />
+  </xr-node>
+
+  <!-- 智能体模型：rotation 修正“躺平”，绕 X 轴 -90 度站立 -->
+  <xr-node>
+    <xr-gltf model="agentGlb" position="0 0 0" scale="1 1 1" rotation="-90 0 0" anim-autoplay />
+  </xr-node>
+</xr-scene>
+

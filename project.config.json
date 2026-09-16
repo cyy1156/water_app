@@ -1,0 +1,54 @@
+{
+  "setting": {
+    "es6": true,
+    "postcss": true,
+    "minified": true,
+    "uglifyFileName": false,
+    "enhance": true,
+    "packNpmRelationList": [],
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    },
+    "useCompilerPlugins": false
+  },
+  "compileType": "miniprogram",
+  "simulatorPluginLibVersion": {},
+  "packOptions": {
+    "ignore": [
+      {
+        "value": "backend/**",
+        "type": "glob"
+      },
+      {
+        "value": ".idea/**",
+        "type": "glob"
+      },
+      {
+        "value": "target/**",
+        "type": "glob"
+      },
+      {
+        "value": "node_modules/**",
+        "type": "glob"
+      },
+      {
+        "value": "*.md",
+        "type": "glob"
+      },
+      {
+        "value": "packageModels/**",
+        "type": "glob"
+      },
+      {
+        "type": "folder",
+        "value": "minitest/"
+      }
+    ],
+    "include": []
+  },
+  "appid": "wxad5480ff983499bd",
+  "editorSetting": {},
+  "testRoot": "minitest/"
+}

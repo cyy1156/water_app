@@ -1,0 +1,28 @@
+<view class="calendar-container">
+  <view class="month-header">
+    <button class="month-btn" style="background-color: {{theme.monthBtnBg}};" bindtap="prevMonth">上月</button>
+    <text class="month-text">{{currentYear}}年{{currentMonth}}月</text>
+    <button class="month-btn" style="background-color: {{theme.monthBtnBg}};" bindtap="nextMonth">下月</button>
+  </view>
+  <view class="calendar-grid">
+    <view class="weekday">日</view><view class="weekday">一</view><view class="weekday">二</view><view class="weekday">三</view><view class="weekday">四</view><view class="weekday">五</view><view class="weekday">六</view>
+    <view class="day {{(item.checked || item.checkinCount > 0) ? 'checked' : 'unchecked'}} {{item.checkinCount >= 4 ? 'high' : ''}} {{item.checkinCount >= 7 ? 'very-high' : ''}}"
+      style="{{item.checkinCount >= 7 ? 'background-color: ' + theme.dayVeryHighBg + '; color: ' + theme.dayVeryHighColor + ';' : item.checkinCount >= 4 ? 'background-color: ' + theme.dayHighBg + '; color: ' + theme.dayHighColor + ';' : (item.checked || item.checkinCount > 0) ? 'background-color: ' + theme.dayCheckedBg + '; color: ' + theme.dayCheckedColor + ';' : ''}}"
+      wx:for="{{calendarDays}}" wx:key="date" bindtap="selectDay" data-date="{{item.date}}">
+      <text class="day-num">{{item.day}}</text>
+      <text class="day-count" wx:if="{{item.checkinCount > 0}}">{{item.checkinCount}}次</text>
+    </view>
+  </view>
+  <view class="month-summary" wx:if="{{monthSummary}}">
+    <text>本月共打卡 {{monthSummary.activeDays}} 天，总喝水量 {{monthSummary.totalWater}} ml</text>
+  </view>
+  <view class="day-detail" wx:if="{{selectedDay}}">
+    <text class="detail-title">{{selectedDay.date}} 打卡详情</text>
+    <view class="detail-list">
+      <view class="detail-item" wx:for="{{selectedDay.records}}" wx:key="id">
+        <text>{{item.time}}: {{item.ml}}ml {{item.waterTypeLabel ? '(' + item.waterTypeLabel + ')' : ''}}</text>
+      </view>
+      <view class="empty" wx:if="{{selectedDay.records.length === 0}}"><text class="empty-text">该日无打卡记录</text></view>
+    </view>
+  </view>
+</view>
